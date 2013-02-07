@@ -2,6 +2,7 @@
 
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
+use strict;
 
 use ExtUtils::MakeMaker;
 
@@ -24,12 +25,16 @@ foreach (@ARGV) {
 my %BuildOptions;
 $BuildOptions{'NAME'}         = "Text::Soundex";
 $BuildOptions{'VERSION_FROM'} = "Soundex.pm";      # Finds $VERSION
-$BuildOptions{'INSTALLDIRS'}  = "perl";            # Install in the CORE.]
+$BuildOptions{'INSTALLDIRS'}  = $] > 5.011 ? 'site' : "perl"; # Install in CORE.
 $BuildOptions{'NORECURS'}     = 1;                 # No need to recurse.
 
 $BuildOptions{'dist'}         = {
                                  'COMPRESS'    => "gzip -v9Nf",
                                  'SUFFIX'      => "gz",
+                                };
+
+$BuildOptions{'PREREQ_PM'}    = {
+                                 'if'          => 0,
                                 };
 
 if ($useXS) {
